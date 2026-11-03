@@ -35,7 +35,12 @@
             dataType: 'json',
             tryCount: 0,
             retryLimit: 3,
-            data: 'kode=' + filter_kode + '&nama=' + filter_nama + '&hargamin=' + filter_harga_min + '&hargamax=' + filter_harga_max,
+            data: {
+                kode: filter_kode,
+                nama: filter_nama,
+                hargamin: filter_harga_min,
+                hargamax: filter_harga_max
+            },
             success: function(results) {
                 var data = results.data
 
