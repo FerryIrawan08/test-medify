@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Kategori;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 
 class KategoriController extends Controller
 {
@@ -88,6 +90,21 @@ class KategoriController extends Controller
     {
         Kategori::findOrFail($id)->delete();
         return redirect('kategoris');
+    }
+
+    public function downloadPdf($kode)
+    {
+        $kategori = Kategori::with('items')->where('kode', $kode)->firstOrFail();
+        $printed_at = Carbon::now()->format('d-m-Y H:i:s') . ' WIB';
+
+        $pdf = Pdf::loadView('kategoris.pdf', [
+            'kategori' => $kategori,
+            'printed_at' => $printed_at,
+        ]);
+
+        $pdf->setPaper('a4', 'portrait');
+
+        return $pdf->download('kategori-' . $kategori->kode . '.pdf');
     }
 }
 

@@ -26,6 +26,7 @@ Route::get('/master-items/search', [App\Http\Controllers\MasterItemsController::
 Route::get('/master-items/form/{method}/{id?}', [App\Http\Controllers\MasterItemsController::class, 'formView']);
 Route::post('/master-items/form/{method}/{id?}', [App\Http\Controllers\MasterItemsController::class, 'formSubmit']);
 
+Route::get('/master-items/export-excel', [App\Http\Controllers\MasterItemsController::class, 'exportExcel']);
 Route::get('/master-items/view/{kode}', [App\Http\Controllers\MasterItemsController::class, 'singleView']);
 Route::get('/master-items/delete/{id}', [App\Http\Controllers\MasterItemsController::class, 'delete']);
 
@@ -38,3 +39,4 @@ Route::get('/kategoris/form/{method}/{id?}', [App\Http\Controllers\KategoriContr
 Route::post('/kategoris/form/{method}/{id?}', [App\Http\Controllers\KategoriController::class, 'formSubmit']);
 Route::get('/kategoris/view/{kode}', [App\Http\Controllers\KategoriController::class, 'singleView']);
 Route::get('/kategoris/delete/{id}', [App\Http\Controllers\KategoriController::class, 'delete']);
+Route::get('/kategoris/pdf/{kode}', [App\Http\Controllers\KategoriController::class, 'downloadPdf']);

@@ -177,11 +177,11 @@ graph TD
   - [x] Price filters work accurately across all combinations (min only, max only, both, zero values).
   - [x] Category CRUD operations (Create, Read, Update, Delete, Search) are fully functional.
   - [x] Many-to-many relationship correctly saves and syncs between Items and Categories.
-  - [ ] Category PDF downloads successfully with header, item table, and timestamped footer.
-  - [ ] Master Items Excel file exports accurately with all 7 columns and comma-separated categories.
-  - [ ] Navbar links for Master Items and Categories are visible and functional.
-  - [ ] All database queries utilize Eloquent eager loading to prevent N+1 issues.
-  - [ ] Final git commit, branch verification, and push readiness.
+  - [x] Category PDF downloads successfully with header, item table, and timestamped footer.
+  - [x] Master Items Excel file exports accurately with all 7 columns and comma-separated categories.
+  - [x] Navbar links for Master Items and Categories are visible and functional.
+  - [x] All database queries utilize Eloquent eager loading to prevent N+1 issues.
+  - [x] Final git commit, branch verification, and push readiness.
 
 ---
 

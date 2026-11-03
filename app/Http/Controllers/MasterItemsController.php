@@ -120,6 +120,21 @@ class MasterItemsController extends Controller
         return redirect('master-items');
     }
 
+    public function exportExcel()
+    {
+        $items = MasterItem::with('kategoris')->orderBy('id')->get();
+        $filename = 'master-items-' . date('Ymd_His') . '.xls';
+
+        $content = view('master_items.export_excel', compact('items'))->render();
+
+        return response($content, 200, [
+            'Content-Type' => 'application/vnd.ms-excel; charset=utf-8',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+            'Pragma' => 'no-cache',
+            'Expires' => '0',
+        ]);
+    }
+
     public function updateRandomData()
     {
         $data = MasterItem::get();
