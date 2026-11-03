@@ -11,10 +11,10 @@
                 <div class="card-header">Master Item</div>
 
                 <div class="card-body">
-                    <table>
+                    <table class="table table-borderless">
                         <tr>
-                            <th>Nama</th>
-                            <td>:</td>
+                            <th style="width: 150px;">Nama</th>
+                            <td style="width: 20px;">:</td>
                             <td>{{$data->nama}}</td>
                         </tr>
                         <tr>
@@ -25,7 +25,7 @@
                         <tr>
                             <th>Laba</th>
                             <td>:</td>
-                            <td>{{$data->laba}}</td>
+                            <td>{{$data->laba}} %</td>
                         </tr>
                         <tr>
                             <th>Harga Jual</th>
@@ -41,6 +41,32 @@
                             <th>Jenis</th>
                             <td>:</td>
                             <td>{{$data->jenis}}</td>
+                        </tr>
+                        <tr>
+                            <th>Kategori</th>
+                            <td>:</td>
+                            <td>
+                                @if(isset($data->kategoris) && $data->kategoris->count() > 0)
+                                    @foreach($data->kategoris as $kategori)
+                                        <a href="{{ url('kategoris/view/' . $kategori->kode) }}" class="badge bg-primary text-decoration-none me-1">
+                                            {{ $kategori->nama }} ({{ $kategori->kode }})
+                                        </a>
+                                    @endforeach
+                                @else
+                                    <span class="text-muted">Tidak ada kategori</span>
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Foto</th>
+                            <td>:</td>
+                            <td>
+                                @if(!empty($data->foto))
+                                    <img src="{{ asset($data->foto) }}" alt="{{ $data->nama }}" style="max-height: 200px; max-width: 100%; border-radius: 8px; border: 1px solid #ddd; padding: 4px;">
+                                @else
+                                    <span class="text-muted">Tidak ada foto</span>
+                                @endif
+                            </td>
                         </tr>
                     </table>
                     <a class="btn btn-info" href="{{url('master-items/form/edit')}}/{{$data->id}}">Edit</a>

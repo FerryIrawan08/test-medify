@@ -12,4 +12,9 @@ class MasterItem extends Model
     use SoftDeletes;
 
     protected $guarded = ['id'];
+
+    public function kategoris()
+    {
+        return $this->belongsToMany(Kategori::class, 'kategori_item', 'master_item_id', 'kategori_id');
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MasterItem;
+use App\Models\Kategori;
 use Illuminate\Http\Request;
 
 class MasterItemsController extends Controller
@@ -45,32 +46,58 @@ class MasterItemsController extends Controller
     public function formView($method, $id = 0)
     {
         if ($method == 'new') {
-            $item = [];
+            $item = (object)[];
+            $selected_kategori_ids = [];
         } else {
-            $item = MasterItem::find($id);
+            $item = MasterItem::with('kategoris')->findOrFail($id);
+            $selected_kategori_ids = $item->kategoris->pluck('id')->toArray();
         }
         $data['item'] = $item;
         $data['method'] = $method;
+        $data['kategoris'] = Kategori::orderBy('nama')->get();
+        $data['selected_kategori_ids'] = $selected_kategori_ids;
         return view('master_items.form.index', $data);
     }
 
     public function singleView($kode)
     {
-        $data['data'] = MasterItem::where('kode', $kode)->first();
+        $data['data'] = MasterItem::with('kategoris')->where('kode', $kode)->firstOrFail();
         return view('master_items.single.index', $data);
     }
 
     public function formSubmit(Request $request, $method, $id = 0)
     {
+        $request->validate([
+            'nama' => 'required',
+            'harga_beli' => 'required|numeric',
+            'laba' => 'required|numeric',
+            'supplier' => 'required',
+            'jenis' => 'required',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
+        ]);
+
         if ($method == 'new') {
             $data_item = new MasterItem;
             $kode = MasterItem::count('id');
             $kode = $kode + 1;
             $kode = str_pad($kode, 5, '0', STR_PAD_LEFT);
-            sleep(3);
         } else {
-            $data_item = MasterItem::find($id);
+            $data_item = MasterItem::findOrFail($id);
             $kode = $data_item->kode;
+        }
+
+        if ($request->hasFile('foto')) {
+            if (!empty($data_item->foto) && file_exists(public_path($data_item->foto))) {
+                @unlink(public_path($data_item->foto));
+            }
+            $file = $request->file('foto');
+            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $destinationPath = public_path('uploads/items');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0777, true);
+            }
+            $file->move($destinationPath, $filename);
+            $data_item->foto = 'uploads/items/' . $filename;
         }
 
         $data_item->nama = $request->nama;
@@ -80,6 +107,9 @@ class MasterItemsController extends Controller
         $data_item->supplier = $request->supplier;
         $data_item->jenis = $request->jenis;
         $data_item->save();
+
+        // Sync many-to-many categories
+        $data_item->kategoris()->sync($request->kategori_ids ?? []);
 
         return redirect('master-items');
     }

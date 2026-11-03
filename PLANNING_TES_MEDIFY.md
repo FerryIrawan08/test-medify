@@ -172,11 +172,11 @@ graph TD
 **Objective:** Validate all requirements end-to-end and prepare for clean repository submission.
 
 * **Verification Checklist:**
-  - [ ] Migrations run cleanly (`php artisan migrate`).
-  - [ ] Image upload functions properly with validation, storage, and detail rendering.
+  - [x] Migrations run cleanly (`php artisan migrate`).
+  - [x] Image upload functions properly with validation, storage, and detail rendering.
   - [x] Price filters work accurately across all combinations (min only, max only, both, zero values).
-  - [ ] Category CRUD operations (Create, Read, Update, Delete, Search) are fully functional.
-  - [ ] Many-to-many relationship correctly saves and syncs between Items and Categories.
+  - [x] Category CRUD operations (Create, Read, Update, Delete, Search) are fully functional.
+  - [x] Many-to-many relationship correctly saves and syncs between Items and Categories.
   - [ ] Category PDF downloads successfully with header, item table, and timestamped footer.
   - [ ] Master Items Excel file exports accurately with all 7 columns and comma-separated categories.
   - [ ] Navbar links for Master Items and Categories are visible and functional.
